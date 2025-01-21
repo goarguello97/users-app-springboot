@@ -2,10 +2,20 @@ package com.springboot.backend.gonzalo.usersapp.users_backend.entities;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -35,6 +45,17 @@ public class User {
     @NotBlank
     private String password;
 
+    @JsonIgnoreProperties({ "handler", "hibernateLazyInitializer" })
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "role_id") }, uniqueConstraints = {
+                    @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
+    private List<Role> role;
+
+    public User() {
+        this.role = new ArrayList<>();
+    }
+
     public Long getId() {
         return id;
     }
@@ -53,6 +74,14 @@ public class User {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public List<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(List<Role> role) {
+        this.role = role;
     }
 
     public void setLastname(String lastname) {
