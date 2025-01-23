@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.backend.gonzalo.usersapp.users_backend.entities.User;
+import com.springboot.backend.gonzalo.usersapp.users_backend.models.UserRequest;
 import com.springboot.backend.gonzalo.usersapp.users_backend.services.UserService;
 
 import jakarta.validation.Valid;
@@ -71,23 +72,16 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> update(@Valid @RequestBody UserRequest user, BindingResult result, @PathVariable Long id) {
 
         if (result.hasErrors()) {
             return validations(result);
-
         }
 
-        Optional<User> optionalUser = this.service.findById(id);
+        Optional<User> optionalUser = this.service.update(user, id);
 
         if (optionalUser.isPresent()) {
-            User userDb = optionalUser.get();
-            userDb.setEmail(user.getEmail());
-            userDb.setLastname(user.getLastname());
-            userDb.setName(user.getName());
-            userDb.setPassword(user.getPassword());
-            userDb.setUsername(user.getUsername());
-            return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(userDb));
+            return ResponseEntity.ok(optionalUser.orElseThrow());
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
