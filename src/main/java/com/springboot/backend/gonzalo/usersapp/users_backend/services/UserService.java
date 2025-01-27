@@ -20,7 +20,7 @@ public interface UserService {
 
     User save(User user);
 
-    void deleteById(Long id);
+    Long deleteById(Long id);
 
     Optional<User> update(UserRequest user, Long id);
 
