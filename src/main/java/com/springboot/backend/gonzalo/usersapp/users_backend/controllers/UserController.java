@@ -92,8 +92,8 @@ public class UserController {
         Optional<User> optionalUser = this.service.findById(id);
 
         if (optionalUser.isPresent()) {
-
-            return ResponseEntity.ok(this.service.deleteById(id));
+            this.service.deleteById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
