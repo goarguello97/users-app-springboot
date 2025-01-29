@@ -28,7 +28,7 @@ import com.springboot.backend.gonzalo.usersapp.users_backend.services.UserServic
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = { "http://localhost:4200/" })
+@CrossOrigin(origins = { "http://localhost:4200/" }, originPatterns = { "*" })
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
