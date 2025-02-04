@@ -110,7 +110,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         Map<String, String> body = new HashMap<>();
 
-        body.put("message", "Error en la autenticación con username y contraseña");
+        body.put("message", "Error en la autenticación con usuario y contraseña");
         body.put("error", failed.getMessage());
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));

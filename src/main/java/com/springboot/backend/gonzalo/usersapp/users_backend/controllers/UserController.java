@@ -28,7 +28,7 @@ import com.springboot.backend.gonzalo.usersapp.users_backend.services.UserServic
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = { "http://localhost:4200/" })
+@CrossOrigin(origins = { "http://localhost:4200/" }, originPatterns = { "*" })
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -88,12 +88,11 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<User> optionalUser = this.service.findById(id);
 
         if (optionalUser.isPresent()) {
             this.service.deleteById(id);
-
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
